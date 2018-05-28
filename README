@@ -1,0 +1,33 @@
+This is a simple benchmark for some mathematical functions defined by either
+C and/or POSIX.  Currently expf, powf, logf, exp2f, and log2f are evaluated.
+
+The benchmarks are based on benchtests from GLIBC [1], adjusted to be build
+as a standalone project.  The input are obtained from trace based SPECcpu2017
+521.wrf_r benchmark [2] with a reduced subset to try mimic the benchmark
+usage.
+
+The benchmarks iterate over the input sample during 10 seconds (configurable
+through DURATION define) and the results are shown in the form:
+
+  "benchmark": {
+   "workload-spec2017.wrf": {
+    "reciprocal-throughput": recip_value
+    "latency": latency_value,
+    "max-throughput": max,
+    "min-throughput": min
+   }
+  }
+
+The 'recip_value' is basically the accumulated time spent in the symbol divided
+by the total number of times it was called during the runtime window (a lower
+value is better).  The 'latency' metric is similar to 'throughput' but enables a
+more accurate comparisons of the math functions by creating a dependency on the
+previous iteration (func_res = F (func_res * zero + input[i])). The multiply by
+zero avoids changing the input.
+    
+The reciprocal throughput and latency are reported in nanoseconds (depending on
+the timing header used) and max/min throughput in iterations per second:
+
+
+[1] https://www.gnu.org/software/libc/
+[2] https://www.spec.org/cpu2017/Docs/benchmarks/521.wrf_r.html
