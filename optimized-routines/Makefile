@@ -13,10 +13,12 @@ CFLAGS += \
 
 all:				liboptimized-routines.so
 
-liboptimized-routines.so:	expf.o exp2f_data.o math_errf.o
+liboptimized-routines.so:	expf.o exp2f.o exp2f_data.o math_errf.o
 				$(CC) $(CFLAGS) -shared -o $@ $^
 
 expf.o:				expf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+exp2f.o:			exp2f.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f_data.o:			exp2f_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
