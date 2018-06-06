@@ -1,6 +1,7 @@
 CFLAGS  = \
   -O2 \
   -I. \
+  -D'__FBSDID(a)=' \
   -D'__RENAME_LDBL(a,b,c)=' \
   -D'__INTRODUCED_IN(a)=' \
   -D'__INTRODUCED_IN_X86(a)=' \
