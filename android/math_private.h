@@ -20,6 +20,7 @@
 #include <sys/types.h>
 //#include <machine/endian.h>
 #include <endian.h>
+#include <stdint.h>
 
 /*
  * The original fdlibm code used statements like:
@@ -41,12 +42,12 @@
 
 #ifdef __arm__
 #if defined(__VFP_FP__) || defined(__ARM_EABI__)
-#define	IEEE_WORD_ORDER	__BYTE_ORDER
+#define	IEEE_WORD_ORDER	BYTE_ORDER
 #else
 #define	IEEE_WORD_ORDER	BIG_ENDIAN
 #endif
 #else /* __arm__ */
-#define	IEEE_WORD_ORDER	__BYTE_ORDER
+#define	IEEE_WORD_ORDER	BYTE_ORDER
 #endif
 
 #if IEEE_WORD_ORDER == BIG_ENDIAN

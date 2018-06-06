@@ -1,6 +1,16 @@
-CFLAGS  = -O2 -I.
+CFLAGS  = \
+  -O2 \
+  -I. \
+  -D'__RENAME_LDBL(a,b,c)=' \
+  -D'__INTRODUCED_IN(a)=' \
+  -D'__INTRODUCED_IN_X86(a)=' \
+  -D'__INTRODUCED_IN_ARM(a)=' \
+  -D'__INTRODUCED_IN_MIPS(a)=' \
+  -D'__VERSIONER_NO_GUARD='
+
 # Mimic Android flags
 CFLAGS += \
+  -D_BSD_SOURCE \
   -DFLT_EVAL_METHOD=0 \
   -Wall \
   -Werror \
@@ -13,10 +23,12 @@ CFLAGS += \
 
 all:			libandroid.so
 
-libandroid.so:		e_expf.o
+libandroid.so:		e_expf.o s_exp2f.o
 			$(CC) $(CFLAGS) -shared -o $@ $^
 
 e_expf.o:		e_expf.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+s_exp2f.o:		s_exp2f.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 clean:
