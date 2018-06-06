@@ -24,7 +24,7 @@ CFLAGS += \
 
 all:			libandroid.so
 
-libandroid.so:		e_expf.o s_exp2f.o e_powf.o e_logf.o
+libandroid.so:		e_expf.o s_exp2f.o e_powf.o e_logf.o e_log2f.o
 			$(CC) $(CFLAGS) -shared -o $@ $^
 
 e_expf.o:		e_expf.c
@@ -34,6 +34,8 @@ s_exp2f.o:		s_exp2f.c
 e_powf.o:		e_powf.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 e_logf.o:		e_logf.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+e_log2f.o:		e_log2f.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 clean:
