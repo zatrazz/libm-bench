@@ -7,7 +7,8 @@ CFLAGS  = \
   -D'__INTRODUCED_IN_X86(a)=' \
   -D'__INTRODUCED_IN_ARM(a)=' \
   -D'__INTRODUCED_IN_MIPS(a)=' \
-  -D'__VERSIONER_NO_GUARD='
+  -D'__VERSIONER_NO_GUARD=' \
+  -D'__strong_reference(a,b)='
 
 # Mimic Android flags
 CFLAGS += \
@@ -25,7 +26,8 @@ CFLAGS += \
 all:			libandroid.so
 
 libandroid.so:		e_expf.o s_exp2f.o e_powf.o e_logf.o e_log2f.o \
-			s_sinf.o s_cosf.o s_sincosf.o
+			s_sinf.o s_cosf.o s_sincosf.o k_rem_pio2.o \
+			s_scalbn.o s_scalbnf.o sqrtf.o floor.o
 			$(CC) $(CFLAGS) -shared -o $@ $^
 
 e_expf.o:		e_expf.c
@@ -44,7 +46,16 @@ s_cosf.o:		s_cosf.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 s_sincosf.o:		s_sincosf.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
-
+k_rem_pio2.o:		k_rem_pio2.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+s_scalbn.o:		s_scalbn.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+s_scalbnf.o:		s_scalbnf.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+sqrtf.o:		sqrtf.S
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+floor.o:		floor.S
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 clean:
 			rm -f *.o *.so

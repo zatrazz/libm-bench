@@ -7,7 +7,8 @@ BENCHS = \
   bench-powf \
   bench-logf \
   bench-exp2f \
-  bench-log2f
+  bench-log2f \
+  bench-sinf
 
 TOPTARGETS := all clean
 SUBDIRS := $(wildcard */.)
@@ -33,6 +34,9 @@ bench-exp2f:	bench-exp2f.o json-lib.o
 bench-log2f:	bench-log2f.o json-lib.o
 		$(CC) -o $@ $^ $(LDFLAGS)
 
+bench-sinf:	bench-sinf.o json-lib.o
+		$(CC) -o $@ $^ $(LDFLAGS)
+
 .ONESHELL:
 bench:		$(BENCHS)
 		BENCHMARKS="$^"
@@ -40,7 +44,7 @@ bench:		$(BENCHS)
 		for bench in $$BENCHMARKS; do
 		  for lib in $$LIBRARIES; do
 		    echo "Running $$bench with $$lib"
-		    LD_PRELOAD=$$lib/lib$$lib.so ./$$bench > $$bench-$$lib.out
+		    LD_PRELOAD=$$lib/lib$$lib.so taskset -c 4 ./$$bench > $$bench-$$lib.out
 		  done
 		done
 
