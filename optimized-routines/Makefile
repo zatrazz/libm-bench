@@ -1,5 +1,5 @@
 CFLAGS  = \
- -O2 \
+  -O2 \
   -I. \
   -DWANT_ERRNO=0 \
   -DWANT_ROUNDING=0 \
@@ -21,8 +21,9 @@ CFLAGS += \
 all:				liboptimized-routines.so
 
 liboptimized-routines.so:	expf.o exp2f.o powf.o logf.o log2f.o \
+				sinf.o cosf.o sincosf.o \
 				exp2f_data.o math_errf.o powf_log2_data.o \
-				logf_data.o log2f_data.o
+				logf_data.o log2f_data.o sincosf_data.o
 				$(CC) $(CFLAGS) -shared -o $@ $^
 
 expf.o:				expf.c
@@ -34,6 +35,14 @@ powf.o:				powf.c
 logf.o:				logf.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 log2f.o:			log2f.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+sinf.o:				sinf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+cosf.o:				cosf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+sincosf.o:			sincosf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+sincosf_data.o:			sincosf_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f_data.o:			exp2f_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
