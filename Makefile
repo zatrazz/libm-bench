@@ -1,4 +1,4 @@
-CFLAGS += -O2 -Wall -g -DDURATION=10 -D_ISOMAC -I. -fgnu89-inline
+CFLAGS += -O2 -Wall -g -DDURATION=10 -D_ISOMAC -I.
 CFLAGS += -fmerge-all-constants -fno-math-errno
 LDFLAGS = -lm
 
@@ -9,37 +9,44 @@ BENCHS = \
   bench-exp2f \
   bench-log2f \
   bench-sinf \
-  bench-cosf
+  bench-cosf \
+  bench-sincosf
 
 TOPTARGETS := all clean
 SUBDIRS := $(wildcard */.)
 
-all:		$(BENCHS) $(SUBDIRS)
+all:			$(BENCHS) $(SUBDIRS)
 
-$(TOPTARGETS):	$(SUBDIRS)
+$(TOPTARGETS):		$(SUBDIRS)
 $(SUBDIRS):
-		$(MAKE) -C $@ $(MAKECMDGOALS)
+			$(MAKE) -C $@ $(MAKECMDGOALS)
 
-bench-expf:	bench-expf.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-expf:		bench-expf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-powf:	bench-powf.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-powf:		bench-powf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-logf:	bench-logf.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-logf:		bench-logf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-exp2f:	bench-exp2f.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-exp2f:		bench-exp2f.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-log2f:	bench-log2f.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-log2f:		bench-log2f.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-sinf:	bench-sinf.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-sinf:		bench-sinf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
 
-bench-cosf:     bench-cosf.o json-lib.o
-		$(CC) -o $@ $^ $(LDFLAGS)
+bench-cosf:     	bench-cosf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
+
+bench-sincosf:		bench-sincosf.o json-lib.o
+			$(CC) -o $@ $^ $(LDFLAGS)
+bench-sincosf.o:	bench-sincosf.c
+			$(CC) $(CFLAGS) -D_GNU_SOURCE $^ -o $@ -c
+
 
 .ONESHELL:
 bench:		$(BENCHS)
@@ -48,7 +55,7 @@ bench:		$(BENCHS)
 		for bench in $$BENCHMARKS; do
 		  for lib in $$LIBRARIES; do
 		    echo "Running $$bench with $$lib"
-		    LD_PRELOAD=$$lib/lib$$lib.so taskset -c 4 ./$$bench > $$bench-$$lib.out
+		    LD_PRELOAD=$$lib/lib$$lib.so ./$$bench > $$bench-$$lib.out
 		  done
 		done
 
