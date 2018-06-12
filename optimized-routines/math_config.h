@@ -56,7 +56,7 @@
 
 /* Compiler can inline fma as a single instruction.  */
 #ifndef HAVE_FAST_FMA
-# if __aarch64__
+# ifdef FP_FAST_FMA
 #   define HAVE_FAST_FMA 1
 # else
 #   define HAVE_FAST_FMA 0
@@ -139,6 +139,15 @@ issignalingf_inline (float x)
   return 2 * (ix ^ 0x00400000) > 2u * 0x7fc00000;
 }
 
+static inline int
+issignaling_inline (double x)
+{
+  uint64_t ix = asuint64 (x);
+  if (!IEEE_754_2008_SNAN)
+    return (ix & 0x7ff8000000000000) == 0x7ff8000000000000;
+  return 2 * (ix ^ 0x0008000000000000) > 2 * 0x7ff8000000000000ULL;
+}
+
 /* Force the evaluation of a floating-point expression for its side-effect.  */
 #if __aarch64__ && __GNUC__
 static inline void
@@ -179,11 +188,26 @@ eval_as_double (double x)
   return x;
 }
 
+/* Provide *_finite symbols and some of the glibc hidden symbols
+   so libmathlib can be used with binaries compiled against glibc
+   to interpose math functions with both static and dynamic linking.  */
+#ifndef USE_GLIBC_ABI
+# if __GNUC__
+#   define USE_GLIBC_ABI 1
+# else
+#   define USE_GLIBC_ABI 0
+# endif
+#endif
+
 #ifdef __GNUC__
 # define HIDDEN __attribute__ ((__visibility__ ("hidden")))
 # define NOINLINE __attribute__ ((noinline))
 # define likely(x) __builtin_expect (!!(x), 1)
 # define unlikely(x) __builtin_expect (x, 0)
+# define strong_alias(f, a) \
+  extern __typeof (f) a __attribute__ ((alias (#f)));
+# define hidden_alias(f, a) \
+  extern __typeof (f) a __attribute__ ((alias (#f), visibility ("hidden")));
 #else
 # define HIDDEN
 # define NOINLINE
@@ -308,5 +332,30 @@ extern const struct log_data {
   struct {double chi, clo;} tab2[1 << LOG_TABLE_BITS];
 #endif
 } __log_data HIDDEN;
+
+#define LOG2_TABLE_BITS 6
+#define LOG2_POLY_ORDER 7
+#define LOG2_POLY1_ORDER 11
+extern const struct log2_data {
+  double invln2hi;
+  double invln2lo;
+  double poly[LOG2_POLY_ORDER - 1];
+  double poly1[LOG2_POLY1_ORDER - 1];
+  struct {double invc, logc;} tab[1 << LOG2_TABLE_BITS];
+#if !HAVE_FAST_FMA
+  struct {double chi, clo;} tab2[1 << LOG2_TABLE_BITS];
+#endif
+} __log2_data HIDDEN;
+
+#define POW_LOG_TABLE_BITS 8
+#define POW_LOG_POLY_ORDER 7
+#define POW_LOG_POLY1_ORDER 9
+extern const struct pow_log_data {
+  double ln2hi;
+  double ln2lo;
+  double poly[POW_LOG_POLY_ORDER - 1]; /* First coefficient is 1.  */
+  double poly1[POW_LOG_POLY1_ORDER - 1];
+  struct {double invc, logc;} tab[1 << POW_LOG_TABLE_BITS];
+} __pow_log_data HIDDEN;
 
 #endif
