@@ -1,7 +1,9 @@
 CFLAGS  = \
  -O2 \
   -I. \
-  -DWANT_ERRNO=0
+  -DWANT_ERRNO=0 \
+  -DWANT_ROUNDING=0 \
+  -ffp-contract=fast
 
 # Mimic Android flags
 CFLAGS += \
