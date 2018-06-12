@@ -8,7 +8,8 @@ BENCHS = \
   bench-logf \
   bench-exp2f \
   bench-log2f \
-  bench-sinf
+  bench-sinf \
+  bench-cosf
 
 TOPTARGETS := all clean
 SUBDIRS := $(wildcard */.)
@@ -35,6 +36,9 @@ bench-log2f:	bench-log2f.o json-lib.o
 		$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-sinf:	bench-sinf.o json-lib.o
+		$(CC) -o $@ $^ $(LDFLAGS)
+
+bench-cosf:     bench-cosf.o json-lib.o
 		$(CC) -o $@ $^ $(LDFLAGS)
 
 .ONESHELL:
