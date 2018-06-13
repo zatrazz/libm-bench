@@ -12,7 +12,7 @@ CFLAGS  = \
 
 # Mimic Android flags
 CFLAGS += \
-  -D_BSD_SOURCE \
+  -D_DEFAULT_SOURCE \
   -DFLT_EVAL_METHOD=0 \
   -Wall \
   -Werror \
