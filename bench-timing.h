@@ -18,9 +18,6 @@
 
 #undef attribute_hidden
 #define attribute_hidden
-#ifdef __x86_64__
-# include "hp-timing-x86_64.h"
-#endif
 #include <stdint.h>
 
 #if HP_TIMING_AVAIL && !defined USE_CLOCK_GETTIME
