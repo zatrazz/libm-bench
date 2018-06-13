@@ -26,3 +26,17 @@
    the number of iterations.  */
 
 void bench_start (void);
+
+static inline void *
+_xmalloc (size_t len, const char *func, int line)
+{
+  void *ret = malloc (len);
+  if (ret == 0)
+    {
+      fprintf (stderr, "%s:%i: error: failed to allocate %zu bytes\n",
+	       func, line, len);
+      exit (EXIT_FAILURE);
+    }
+  return ret;
+}
+#define xmalloc(len) _xmalloc ((len), __func__, __LINE__)
