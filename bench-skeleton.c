@@ -52,9 +52,9 @@ parse_uint (const char *str)
 {
   char *endptr;
   errno = 0;
-  unsigned int ret = strtol (str, &endptr, 10);
-  if ((errno == ERANGE && (iterations == LONG_MAX || iterations == LONG_MIN))
-      || (errno != 0 && iterations == 0))
+  long int ret = strtol (str, &endptr, 10);
+  if ((errno == ERANGE && (ret == LONG_MAX || ret == LONG_MIN))
+      || (errno != 0 && ret == 0))
     {
       fprintf (stderr, "error: invalid number of iterations (%s)\n", str);
       exit (EXIT_FAILURE);
