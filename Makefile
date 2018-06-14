@@ -52,7 +52,7 @@ bench-sincosf.o:	bench-sincosf.c
 
 .ONESHELL:
 bench:		$(BENCHS)
-		BENCHMARKS="bench-sinf bench-cosf bench-sincosf"
+		BENCHMARKS="$^"
 		LIBRARIES=`for i in $$(ls -d */); do echo $${i%%/}; done`
 		for bench in $$BENCHMARKS; do
 		  for lib in $$LIBRARIES; do
