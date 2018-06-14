@@ -78,9 +78,10 @@ parse_arguments (int argc, char **argv)
 	  break;
 	case 't':
 	  duration = parse_uint (optarg);
+	  break;
 	default:
 	  {
-	    fprintf (stderr, "Usage: %s [-d] [-i iteration]\n",
+	    fprintf (stderr, "Usage: %s [-d] [-i iteration] [-t duration]\n",
 		     argv[0]);
 	    exit (EXIT_FAILURE);
 	  }
@@ -231,6 +232,8 @@ main (int argc, char **argv)
 
   json_init (&json_ctx, 2, stdout);
 
+  json_document_begin (&json_ctx);
+
   /* Begin function.  */
   json_attr_object_begin (&json_ctx, FUNCNAME);
 
@@ -275,6 +278,8 @@ main (int argc, char **argv)
 
   /* End function.  */
   json_attr_object_end (&json_ctx);
+
+  json_document_end (&json_ctx);
 
   statistic_free (statistics);
 
