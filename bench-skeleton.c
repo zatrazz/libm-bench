@@ -45,12 +45,28 @@
 
 static bool detailed = false;
 static unsigned int iterations = 1;
+static unsigned int duration = 10;
+
+static unsigned int
+parse_uint (const char *str)
+{
+  char *endptr;
+  errno = 0;
+  unsigned int ret = strtol (str, &endptr, 10);
+  if ((errno == ERANGE && (iterations == LONG_MAX || iterations == LONG_MIN))
+      || (errno != 0 && iterations == 0))
+    {
+      fprintf (stderr, "error: invalid number of iterations (%s)\n", str);
+      exit (EXIT_FAILURE);
+    }
+  return ret;
+}
 
 static void
 parse_arguments (int argc, char **argv)
 {
   int opt;
-  while ((opt = getopt (argc, argv, "di:")) != -1)
+  while ((opt = getopt (argc, argv, "di:t:")) != -1)
     {
       switch (opt)
 	{
@@ -58,20 +74,10 @@ parse_arguments (int argc, char **argv)
 	  detailed = true;
 	  break;
 	case 'i':
-	  {
-	    char *endptr;
-	    errno = 0;
-	    iterations = strtol (optarg, &endptr, 10);
-	    if ((errno == ERANGE && (iterations == LONG_MAX
-				     || iterations == LONG_MIN))
-		|| (errno != 0 && iterations == 0))
-	      {
-		fprintf (stderr, "error: invalid number of iterations (%s)\n",
-			 optarg);
-		exit (EXIT_FAILURE);
-	      }
-	    break;
-	  }
+	  iterations = parse_uint (optarg);
+	  break;
+	case 't':
+	  duration = parse_uint (optarg);
 	default:
 	  {
 	    fprintf (stderr, "Usage: %s [-d] [-i iteration]\n",
@@ -90,7 +96,7 @@ run_iteration (json_ctx_t * json_ctx, int v, unsigned long iters, unsigned long 
   struct timespec runtime = { 0 };
   /* Run for approximately DURATION seconds.  */
   clock_gettime (CLOCK_MONOTONIC_RAW, &runtime);
-  runtime.tv_sec += DURATION;
+  runtime.tv_sec += duration;
 
   bool is_bench = strncmp (VARIANT (v), "workload-", 9) == 0;
   double d_total_i = 0;

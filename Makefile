@@ -1,4 +1,4 @@
-CFLAGS += -O2 -Wall -g -DDURATION=3 -D_ISOMAC -I.
+CFLAGS += -O2 -Wall -g -D_ISOMAC -I.
 CFLAGS += -fmerge-all-constants -fno-math-errno
 LDFLAGS = -lm
 
