@@ -25,10 +25,14 @@ CFLAGS += \
 
 UNAME := $(shell uname -m)
 ifeq ($(UNAME), x86_64)
-ASMOBJS=floor_x86_64.o sqrtf_x86_64.o
+ASMOBJS=\
+  floor_x86_64.o \
+  sqrtf_x86_64.o \
+  e_exp-x86_64.o
 endif
 ifeq ($(UNAME), aarch64)
 ASMOBJS=sqrt_aarch64.o
+COBJS=e_exp.o
 endif
 
 all:			libandroid.so
@@ -36,7 +40,7 @@ all:			libandroid.so
 libandroid.so:		e_expf.o s_exp2f.o e_powf.o e_logf.o e_log2f.o \
 			s_sinf.o s_cosf.o s_sincosf.o k_rem_pio2.o \
 			s_scalbn.o s_scalbnf.o \
-			$(ASMOBJS)
+			$(ASMOBJS) $(COBJS)
 			$(CC) $(CFLAGS) -shared -o $@ $^
 
 e_expf.o:		e_expf.c
@@ -62,9 +66,14 @@ s_scalbn.o:		s_scalbn.c
 s_scalbnf.o:		s_scalbnf.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
+e_exp.o:		e_exp.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+
 sqrtf_x86_64.o:		sqrtf_x86_64.S
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 floor_x86_64.o:		floor_x86_64.S
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+e_exp-x86_64.o:		e_exp-x86_64.S
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 sqrt_aarch64.o:		sqrt_aarch64.S
