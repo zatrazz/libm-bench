@@ -3,6 +3,7 @@ CFLAGS += -fmerge-all-constants -fno-math-errno
 LDFLAGS = -lm
 
 BENCHS = \
+  bench-exp \
   bench-expf \
   bench-powf \
   bench-logf \
@@ -24,6 +25,8 @@ $(SUBDIRS):
 			$(MAKE) -C $@ $(MAKECMDGOALS)
 
 bench-expf:		bench-expf.o $(COMMON_OBJS)
+			$(CC) -o $@ $^ $(LDFLAGS)
+bench-exp:		bench-exp.o $(COMMON_OBJS)
 			$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-powf:		bench-powf.o $(COMMON_OBJS)
