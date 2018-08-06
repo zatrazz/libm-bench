@@ -3,7 +3,8 @@ CFLAGS  = \
   -I. \
   -DWANT_ERRNO=0 \
   -DWANT_ROUNDING=0 \
-  -ffp-contract=fast
+  -ffp-contract=fast \
+  -fno-math-errno
 
 # Mimic Android flags
 CFLAGS += \
@@ -18,15 +19,26 @@ CFLAGS += \
   -Wno-unused-const-variable \
   -Wno-unused-variable
 
+UNAME := $(shell uname -m)
+ifeq ($(UNAME), x86_64)
+endif
+ifeq ($(UNAME), aarch64)
+CFLAGS += \
+  -DHAVE_FAST_FMA=1
+endif
+
 all:				liboptimized-routines.so
 
 liboptimized-routines.so:	expf.o exp2f.o powf.o logf.o log2f.o \
-				sinf.o cosf.o sincosf.o \
+				sinf.o cosf.o sincosf.o exp.o \
 				exp2f_data.o math_errf.o powf_log2_data.o \
-				logf_data.o log2f_data.o sincosf_data.o
+				logf_data.o log2f_data.o sincosf_data.o \
+				exp_data.o math_err.o
 				$(CC) $(CFLAGS) -shared -o $@ $^
 
 expf.o:				expf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+exp.o:				exp.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f.o:			exp2f.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
@@ -43,6 +55,8 @@ cosf.o:				cosf.c
 sincosf.o:			sincosf.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 sincosf_data.o:			sincosf_data.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+exp_data.o:			exp_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f_data.o:			exp2f_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
