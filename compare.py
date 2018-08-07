@@ -3,7 +3,7 @@
 import sys
 import json
 
-def compare_statistics(data1, data2):
+def compare_statistics(data1, data2, metric):
   statistics1 = data1["statistics"]
   statistics2 = data2["statistics"]
 
@@ -16,7 +16,7 @@ def compare_statistics(data1, data2):
     diff = value1/value2
     print("{:25s}| {:>11.4f} | {:>11.4f} | {:>7.4f}".format(d1k, value1, value2, diff))
 
-def compare_iteration0(data1, data2):
+def compare_iteration0(data1, data2, metric):
   iteration1 = data1["iteration-0"]
   iteration2 = data2["iteration-0"]
 
@@ -31,12 +31,13 @@ def compare_iteration0(data1, data2):
  
 
 if __name__ == "__main__":
-  if len(sys.argv) < 4:
+  if len(sys.argv) < 3:
     sys.exit(0)
 
-  metric = sys.argv[1]
-  file1 = sys.argv[2]
-  file2 = sys.argv[3]
+  file1 = sys.argv[1]
+  file2 = sys.argv[2]
+
+  metrics = [ "reciprocal-throughput", "latency" ]
 
   with open(file1, "r") as json_data1, \
        open(file2, "r") as json_data2:
@@ -46,6 +47,10 @@ if __name__ == "__main__":
     data2 = next(iter(data2.values()))
 
     if "statistics" in data1:
-      compare_statistics(data1, data2)
+      for metric in metrics:
+        compare_statistics(data1, data2, metric)
+        print(62 * '-')
     else:
-      compare_iteration0(data1, data2);
+      for metric in metrics:
+        compare_iteration0(data1, data2, metric)
+        print(62 * '-')
