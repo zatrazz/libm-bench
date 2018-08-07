@@ -5,6 +5,7 @@ LDFLAGS = -lm
 BENCHS = \
   bench-exp \
   bench-expf \
+  bench-pow \
   bench-powf \
   bench-log \
   bench-logf \
@@ -33,6 +34,8 @@ bench-exp:		bench-exp.o $(COMMON_OBJS)
 			$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-powf:		bench-powf.o $(COMMON_OBJS)
+			$(CC) -o $@ $^ $(LDFLAGS)
+bench-pow:		bench-pow.o $(COMMON_OBJS)
 			$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-logf:		bench-logf.o $(COMMON_OBJS)
