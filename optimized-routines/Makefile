@@ -70,6 +70,8 @@ exp_data.o:			exp_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f_data.o:			exp2f_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+math_err.o:			math_err.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 math_errf.o:			math_errf.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 pow_log2_data.o:		pow_log2_data.c
