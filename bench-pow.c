@@ -2527,11 +2527,11 @@ struct args in1[2186] = {
 
 
 struct _variants variants[2] = {
-  {"random", 315, in0},
+  //{"random", 315, in0},
   {"workload-spec2006.wrf", 2186, in1},
 };
 
-#define NUM_VARIANTS 2
+#define NUM_VARIANTS 1
 #define NUM_SAMPLES(i) (variants[i].count)
 #define VARIANT(i) (variants[i].name)
 
