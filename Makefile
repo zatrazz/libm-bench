@@ -6,6 +6,7 @@ BENCHS = \
   bench-exp \
   bench-expf \
   bench-powf \
+  bench-log \
   bench-logf \
   bench-exp2 \
   bench-exp2f \
@@ -34,6 +35,8 @@ bench-powf:		bench-powf.o $(COMMON_OBJS)
 			$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-logf:		bench-logf.o $(COMMON_OBJS)
+			$(CC) -o $@ $^ $(LDFLAGS)
+bench-log:		bench-log.o $(COMMON_OBJS)
 			$(CC) -o $@ $^ $(LDFLAGS)
 
 bench-exp2f:		bench-exp2f.o $(COMMON_OBJS)
