@@ -29,11 +29,12 @@ ASMOBJS=\
   floor_x86_64.o \
   sqrtf_x86_64.o \
   e_exp-x86_64.o \
-  e_log-x86_64.o 
+  e_log-x86_64.o \
+  e_pow-x86_64.o
 endif
 ifeq ($(UNAME), aarch64)
 ASMOBJS=sqrt_aarch64.o
-COBJS=e_exp.o e_log.o
+COBJS=e_exp.o e_log.o e_pow.o
 endif
 
 all:			libandroid.so
@@ -75,6 +76,8 @@ e_log.o:		e_log.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 e_log2.o:		e_log2.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+e_pow.o:		e_pow.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 sqrtf_x86_64.o:		sqrtf_x86_64.S
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
@@ -83,6 +86,8 @@ floor_x86_64.o:		floor_x86_64.S
 e_exp-x86_64.o:		e_exp-x86_64.S
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 e_log-x86_64.o:		e_log-x86_64.S
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+e_pow-x86_64.o:		e_pow-x86_64.S
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 sqrt_aarch64.o:		sqrt_aarch64.S
