@@ -39,7 +39,7 @@ all:			libandroid.so
 
 libandroid.so:		e_expf.o s_exp2f.o e_powf.o e_logf.o e_log2f.o \
 			s_sinf.o s_cosf.o s_sincosf.o k_rem_pio2.o \
-			s_scalbn.o s_scalbnf.o \
+			s_scalbn.o s_scalbnf.o s_exp2.o \
 			$(ASMOBJS) $(COBJS)
 			$(CC) $(CFLAGS) -shared -o $@ $^
 
@@ -67,6 +67,8 @@ s_scalbnf.o:		s_scalbnf.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 e_exp.o:		e_exp.c
+			$(CC) $(CFLAGS) -fpic -c -o $@ $^
+s_exp2.o:		s_exp2.c
 			$(CC) $(CFLAGS) -fpic -c -o $@ $^
 
 sqrtf_x86_64.o:		sqrtf_x86_64.S
