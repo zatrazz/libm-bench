@@ -31,10 +31,10 @@ all:				liboptimized-routines.so
 
 liboptimized-routines.so:	expf.o exp2f.o powf.o logf.o log2f.o \
 				sinf.o cosf.o sincosf.o exp.o exp2.o \
-				log.o \
+				log.o log2.o \
 				exp2f_data.o math_errf.o powf_log2_data.o \
 				logf_data.o log2f_data.o sincosf_data.o \
-				exp_data.o math_err.o log_data.o
+				exp_data.o math_err.o log_data.o log2_data.o
 				$(CC) $(CFLAGS) -shared -o $@ $^
 
 expf.o:				expf.c
@@ -50,6 +50,8 @@ powf.o:				powf.c
 log.o:				log.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 logf.o:				logf.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+log2.o:				log2.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 log2f.o:			log2f.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
@@ -72,6 +74,8 @@ powf_log2_data.o:		powf_log2_data.c
 log_data.o:			log_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 logf_data.o:			logf_data.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+log2_data.o:			log2_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 log2f_data.o:			log2f_data.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
