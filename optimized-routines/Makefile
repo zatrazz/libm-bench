@@ -30,7 +30,7 @@ endif
 all:				liboptimized-routines.so
 
 liboptimized-routines.so:	expf.o exp2f.o powf.o logf.o log2f.o \
-				sinf.o cosf.o sincosf.o exp.o \
+				sinf.o cosf.o sincosf.o exp.o exp2.o \
 				exp2f_data.o math_errf.o powf_log2_data.o \
 				logf_data.o log2f_data.o sincosf_data.o \
 				exp_data.o math_err.o
@@ -41,6 +41,8 @@ expf.o:				expf.c
 exp.o:				exp.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 exp2f.o:			exp2f.c
+				$(CC) $(CFLAGS) -fpic -c -o $@ $^
+exp2.o:				exp2.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
 powf.o:				powf.c
 				$(CC) $(CFLAGS) -fpic -c -o $@ $^
